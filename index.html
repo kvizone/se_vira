@@ -15,7 +15,7 @@
         }
 
         :root {
-            --bg: #E8E4E0;
+            --bg: #F4F3F0;
             --surface: #FFFFFF;
             --ink: #2D2D2D;
             --ink-soft: #555;
@@ -47,7 +47,7 @@
 
         @keyframes float {
             0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-6px); }
+            50% { transform: translateY(-8px); }
         }
         @keyframes pop-in {
             0% { transform: scale(0.92); opacity: 0; }
@@ -58,9 +58,33 @@
             to { transform: rotate(360deg); }
         }
 
-        .animate-float { animation: float 3s ease-in-out infinite; }
+        .animate-float { animation: float 3.5s ease-in-out infinite; }
         .animate-pop { animation: pop-in 0.3s ease-out; }
         .animate-spin-slow { animation: spin-slow 12s linear infinite; }
+
+        /* ─── Botão Flutuante (Tela Inicial) ─── */
+        .btn-circle {
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            background: var(--ink);
+            color: #FFF;
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .btn-circle:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 28px rgba(0,0,0,0.2);
+        }
+        .btn-circle:active {
+            transform: translateY(2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
 
         /* ─── Panels ─── */
         .panel {
@@ -77,7 +101,7 @@
             padding: 32px 24px;
         }
 
-        /* ─── Buttons ─── */
+        /* ─── Buttons Extras ─── */
         .btn {
             display: inline-flex;
             align-items: center;
@@ -144,8 +168,16 @@
             display: flex;
             flex-direction: column;
             box-shadow: 0 6px 28px rgba(0,0,0,0.14);
-            animation: pop-in 0.3s ease-out;
             color: var(--ink);
+            background: var(--surface);
+            
+            user-select: none;
+            touch-action: none;
+            cursor: grab;
+            will-change: transform;
+        }
+        .game-card:active {
+            cursor: grabbing;
         }
 
         .game-card-top {
@@ -337,30 +369,34 @@
 
     <div id="app" style="width:100%; max-width:480px; margin:0 auto; display:flex; flex-direction:column; align-items:center; justify-content:center;">
 
-        <!-- ═══ TELA INICIAL ═══ -->
-        <div id="screen-start" class="panel">
-            <div class="panel-body" style="text-align:center;">
+        <!-- ═══ TELA INICIAL (NOVO DESIGN TIPO APP) ═══ -->
+        <div id="screen-start" class="animate-pop" style="width: 100%; min-height: 85vh; display: flex; flex-direction: column; justify-content: space-between; padding: 20px 8px;">
 
-                <div style="position:relative; width:120px; height:120px; margin:0 auto 28px;">
-                    <div class="animate-spin-slow" style="position:absolute; inset:0; background:var(--yellow); border-radius:50%;"></div>
-                    <div style="position:absolute; inset:10px; background:var(--surface); border-radius:50%; display:flex; align-items:center; justify-content:center;">
-                        <span class="font-retro" style="font-size:3.4rem; font-weight:800;">!</span>
-                    </div>
-                </div>
+            <!-- Top: Ilustração (1 Emoji) -->
+            <div style="flex-grow: 1; display: flex; align-items: center; justify-content: center;">
+                <span class="animate-float" style="font-size: 8.5rem; filter: drop-shadow(0 12px 24px rgba(0,0,0,0.12));">🤭</span>
+            </div>
 
-                <h1 class="font-retro" style="font-size:2.8rem; font-weight:800; line-height:0.95; text-transform:uppercase; letter-spacing:-0.04em; margin-bottom:14px;">
-                    SE<br>
-                    <span style="display:inline-block; background:var(--ink); color:var(--yellow); padding:4px 14px; border-radius:8px; transform:rotate(-2deg); margin-top:6px;">VIRA!</span>
+            <!-- Centro/Baixo: Textos -->
+            <div style="margin-bottom: 48px; text-align: left;">
+                <h1 class="font-retro" style="font-size: 4.2rem; font-weight: 800; line-height: 0.95; letter-spacing: -0.04em; margin-bottom: 20px; color: var(--ink);">
+                    Se<br>vira!
                 </h1>
-
-                <p style="font-weight:600; color:var(--ink-soft); margin-bottom:32px; font-size:0.95rem;">
+                <p style="font-size: 1.15rem; font-weight: 600; color: var(--ink-soft); line-height: 1.45; max-width: 320px;">
                     Um jogo de situações hipotéticas (ou não).
                 </p>
+            </div>
 
-                <button onclick="startGameSequence()" class="btn btn-pink" style="width:100%; font-size:1.1rem;">
-                    INICIAR JOGO ⚡
+            <!-- Footer: Botão -->
+            <div style="display: flex; justify-content: flex-end; align-items: center;">
+                <button onclick="startGameSequence()" class="btn-circle">
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                        <polyline points="12 5 19 12 12 19"></polyline>
+                    </svg>
                 </button>
             </div>
+
         </div>
 
         <!-- ═══ TELA LOBBY ═══ -->
@@ -370,7 +406,7 @@
                 <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:24px;">
                     <h2 class="font-retro" style="font-size:1.6rem; font-weight:800; text-transform:uppercase;">Início</h2>
                     <button onclick="toggleMusic()" class="icon-btn" style="background:var(--purple); color:#fff;" title="Tocar / Pausar Rádio">
-                        <span class="icon-playing">📻</span>
+                        <span class="icon-playing">⏸️</span>
                         <span class="icon-paused" style="display:none;">▶️</span>
                     </button>
                 </div>
@@ -405,7 +441,7 @@
                     </div>
                     <div class="rule-row">
                         <div class="rule-num" style="background:var(--pink);">2</div>
-                        <p class="rule-text">Leia o título e o desafio em voz alta. Cumpra a ação e passe para o próximo jogador.</p>
+                        <p class="rule-text">Leia o título e o desafio em voz alta. Cumpra a ação e <b>deslize a carta</b> para passar o turno.</p>
                     </div>
                     <div class="rule-row">
                         <div class="rule-num" style="background:var(--purple); color:#fff;">3</div>
@@ -436,13 +472,13 @@
                         <span class="icon-playing">⏸️</span>
                         <span class="icon-paused" style="display:none;">▶️</span>
                     </button>
-                    <button onclick="confirmReset()" class="icon-btn" style="background:#E8E4E0; color:var(--ink);" title="Voltar ao Início">
+                    <button onclick="confirmReset()" class="icon-btn" style="background:#E0DCDA; color:var(--ink);" title="Voltar ao Início">
                         ↺
                     </button>
                 </div>
             </div>
 
-            <div id="game-card" class="game-card">
+            <div id="game-card" class="game-card animate-pop">
 
                 <div id="card-top" class="game-card-top" style="background:var(--pink);">
                     <div class="icon-box">
@@ -463,10 +499,9 @@
 
             </div>
 
-            <div style="margin-top:20px; width:100%; max-width:320px;">
-                <button onclick="nextTurn()" class="btn btn-purple" style="width:100%; font-size:0.95rem;">
-                    PRÓXIMO JOGADOR ➔
-                </button>
+            <!-- Auxiliar para guiar a mecânica do novo controle -->
+            <div style="margin-top:20px; width:100%; text-align:center; color:var(--ink-soft); font-weight:600; font-size:0.85rem; line-height:1.45;">
+                👈 Deslize para avançar ou voltar 👉<br>
             </div>
         </div>
 
@@ -564,6 +599,8 @@
         ];
 
         let currentDeck = [];
+        let currentCardIndex = 0;
+        let isAnimating = false;
 
         function playBackgroundMusic() {
             const audio = document.getElementById('bgMusic');
@@ -655,7 +692,15 @@
 
         function startPlaying() {
             currentDeck = shuffle([...originalDeck]);
+            currentCardIndex = 0;
             currentPlayerIndex = 0;
+
+            const el = document.getElementById('game-card');
+            
+            el.style.transition = 'none';
+            el.style.transform = 'translate(0px, 0px) rotate(0deg)';
+            el.className = 'game-card animate-pop';
+
             prepareTurn();
             showScreen('screen-game');
         }
@@ -663,8 +708,8 @@
         function prepareTurn() {
             document.getElementById('current-player-name').textContent = players[currentPlayerIndex];
 
-            if (currentDeck.length > 0) {
-                const card = currentDeck.shift();
+            if (currentCardIndex < currentDeck.length) {
+                const card = currentDeck[currentCardIndex];
                 const bg = colorMap[card.title] || '#E84B8A';
 
                 document.getElementById('card-title').textContent = card.title;
@@ -673,7 +718,6 @@
                 document.getElementById('card-desc').innerHTML = card.desc;
                 document.getElementById('card-top').style.background = bg;
 
-                // Adjust title color for light backgrounds
                 const titleEl = document.getElementById('card-title');
                 titleEl.style.color = card.title === 'Gatinho Cansado' ? 'var(--ink)' : '#fff';
 
@@ -691,12 +735,6 @@
                 } else {
                     timerContainer.style.display = 'none';
                 }
-
-                // Re-trigger animation
-                const el = document.getElementById('game-card');
-                el.style.animation = 'none';
-                el.offsetHeight;
-                el.style.animation = '';
             }
         }
 
@@ -721,14 +759,134 @@
             }, 1000);
         }
 
-        function nextTurn() {
-            if (currentDeck.length === 0) {
+        function executeNextTurn() {
+            if (currentCardIndex >= currentDeck.length - 1) {
                 showScreen('screen-end');
+                isAnimating = false;
+                gameCard.style.transform = `translate(0px, 0px) rotate(0deg)`;
                 return;
             }
-            currentPlayerIndex = (currentPlayerIndex + 1) % players.length;
+            
+            currentCardIndex++;
+            currentPlayerIndex = currentCardIndex % players.length;
             prepareTurn();
+            
+            gameCard.style.transition = 'none';
+            gameCard.style.transform = `translate(150vw, 0px) rotate(15deg)`;
+            
+            gameCard.offsetHeight;
+
+            gameCard.style.transition = 'transform 0.35s ease-out';
+            gameCard.style.transform = `translate(0px, 0px) rotate(0deg)`;
+            
+            setTimeout(() => { isAnimating = false; }, 350);
         }
+
+        function executePrevTurn() {
+            currentCardIndex--;
+            currentPlayerIndex = currentCardIndex % players.length;
+            prepareTurn();
+            
+            gameCard.style.transition = 'none';
+            gameCard.style.transform = `translate(-150vw, 0px) rotate(-15deg)`;
+            
+            gameCard.offsetHeight;
+
+            gameCard.style.transition = 'transform 0.35s ease-out';
+            gameCard.style.transform = `translate(0px, 0px) rotate(0deg)`;
+            
+            setTimeout(() => { isAnimating = false; }, 350);
+        }
+
+        // --- SISTEMA FÍSICO DE ARRASTO (Estilo Tinder) ---
+        const gameCard = document.getElementById('game-card');
+        let isDragging = false;
+        let startX = 0;
+        let startY = 0;
+        let currentX = 0;
+        let currentY = 0;
+
+        function startDrag(e, x, y) {
+            if (isAnimating) return;
+            
+            if (e.target.tagName && e.target.tagName.toLowerCase() === 'button') return;
+            
+            isDragging = true;
+            startX = x;
+            startY = y;
+            gameCard.style.transition = 'none';
+        }
+
+        function moveDrag(x, y) {
+            if (!isDragging) return;
+            currentX = x - startX;
+            currentY = y - startY;
+            const rotate = currentX * 0.05;
+            
+            gameCard.style.transform = `translate(${currentX}px, ${currentY}px) rotate(${rotate}deg)`;
+        }
+
+        function endDrag() {
+            if (!isDragging) return;
+            isDragging = false;
+            
+            const threshold = 100;
+            gameCard.style.transition = 'transform 0.35s ease-out';
+            
+            if (currentX < -threshold) {
+                isAnimating = true;
+                gameCard.style.transform = `translate(-150vw, ${currentY}px) rotate(-15deg)`;
+                
+                setTimeout(() => {
+                    executeNextTurn();
+                }, 350);
+            
+            } else if (currentX > threshold) {
+                if (currentCardIndex > 0) {
+                    isAnimating = true;
+                    gameCard.style.transform = `translate(150vw, ${currentY}px) rotate(15deg)`;
+                    
+                    setTimeout(() => {
+                        executePrevTurn();
+                    }, 350);
+                } else {
+                    gameCard.style.transform = `translate(0px, 0px) rotate(0deg)`;
+                }
+            
+            } else {
+                gameCard.style.transform = `translate(0px, 0px) rotate(0deg)`;
+            }
+            
+            currentX = 0;
+            currentY = 0;
+        }
+
+        gameCard.addEventListener('touchstart', e => {
+            const touch = e.touches[0];
+            startDrag(e, touch.clientX, touch.clientY);
+        }, {passive: true});
+
+        gameCard.addEventListener('touchmove', e => {
+            if (!isDragging) return;
+            const touch = e.touches[0];
+            moveDrag(touch.clientX, touch.clientY);
+        });
+
+        gameCard.addEventListener('touchend', e => {
+            endDrag();
+        });
+
+        gameCard.addEventListener('mousedown', e => {
+            startDrag(e, e.clientX, e.clientY);
+        });
+
+        document.addEventListener('mousemove', e => {
+            moveDrag(e.clientX, e.clientY);
+        });
+
+        document.addEventListener('mouseup', e => {
+            endDrag();
+        });
 
         function confirmReset() {
             if (confirm('Tem certeza que quer voltar ao início?')) {
