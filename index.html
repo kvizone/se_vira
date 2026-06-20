@@ -412,13 +412,13 @@
                 </div>
 
                 <p style="font-size:0.85rem; font-weight:600; text-align:center; margin-bottom:16px; color:var(--ink-soft);">
-                    Insira o nome dos jogadores abaixo para começar (Mínimo 2):
+                    Insira o nome dos jogadores abaixo pra começar (min. 2):
                 </p>
 
                 <div id="players-list" style="display:flex; flex-direction:column; gap:10px;"></div>
 
                 <div style="display:flex; justify-content:space-between; align-items:center; margin-top:14px;">
-                    <button onclick="addPlayerInput()" class="add-link">+ ADICIONAR JOGADOR</button>
+                    <button onclick="addPlayerInput()" class="add-link">+ ADICIONAR</button>
                     <span id="player-error" class="error-msg">Preencha ao menos 2 nomes!</span>
                 </div>
 
@@ -441,7 +441,7 @@
                     </div>
                     <div class="rule-row">
                         <div class="rule-num" style="background:var(--pink);">2</div>
-                        <p class="rule-text">Leia o título e o desafio em voz alta. Cumpra a ação e <b>deslize a carta</b> para passar o turno.</p>
+                        <p class="rule-text">Leia o título e o desafio em voz alta. Cumpra a ação e <b>deslize a carta</b> pra passar o turno.</p>
                     </div>
                     <div class="rule-row">
                         <div class="rule-num" style="background:var(--purple); color:#fff;">3</div>
@@ -449,7 +449,7 @@
                     </div>
                     <div class="rule-row">
                         <div class="rule-num" style="background:var(--teal); color:#fff;">4</div>
-                        <p class="rule-text">Tem uma música de fundo, use o botão play/pause para ligar ou desativar.</p>
+                        <p class="rule-text">Tem uma música de fundo, use o botão play/pause pra ligar ou desativar.</p>
                     </div>
                 </div>
 
@@ -501,7 +501,7 @@
 
             <!-- Auxiliar para guiar a mecânica do novo controle -->
             <div style="margin-top:20px; width:100%; text-align:center; color:var(--ink-soft); font-weight:600; font-size:0.85rem; line-height:1.45;">
-                👈 Deslize para avançar ou voltar 👉<br>
+                👈 Deslize pra avançar ou voltar 👉<br>
             </div>
         </div>
 
@@ -540,42 +540,42 @@
             { title: 'Se Vira!', icon: '🤡', actionName: 'STAND UP', desc: 'Conte uma piadoca.' },
             { title: 'Se Vira!', icon: '🖼️', actionName: 'CRÍTICA DE ARTE', desc: 'Defenda uma arte totalmente em branco.' },
             { title: 'Se Vira!', icon: '👽', actionName: 'PALESTRINHA', desc: 'Um alienígena escolheu vc como representante da humanidade. Qual seria seu primeiro discurso pra população alien ao chegar no planeta deles?' },
-            { title: 'Se Vira!', icon: '🤣', actionName: 'PRODUTIVIDADE', desc: 'Você precisa justificar 8 horas de trabalho usando apenas memes.' },
+            { title: 'Se Vira!', icon: '🤣', actionName: 'PRODUTIVIDADE', desc: 'Vc precisa justificar 8 horas de trabalho usando apenas memes.' },
             { title: 'Se Vira!', icon: '🐒', actionName: 'SAFARI OFFICE', desc: 'Seu notebook da empresa foi roubado por macacos. Relate o ocorrido.' },
             { title: 'Se Vira!', icon: '🌤️', actionName: 'GAROTA DO TEMPO', desc: 'Descreva seu dia de trabalho como se fosse um jornal com a previsão do tempo.' },
-            { title: 'Se Vira!', icon: '🖊️', actionName: 'LOBO DE WALL STREET', desc: 'Você precisa vender uma caneta que não escreve. Qual seria o seu discurso?' },
+            { title: 'Se Vira!', icon: '🖊️', actionName: 'LOBO DE WALL STREET', desc: 'Vc precisa vender uma caneta que não escreve. Qual seria o seu discurso?' },
             { title: 'Se Vira!', icon: '☁️', actionName: 'MARKETING', desc: 'Seu chefe começou a vender nuvens do céu. Crie um pitch de vendas pra ajudá-lo.' },
             { title: 'Se Vira!', icon: '🚽', actionName: 'ÁGUA PREMIUM', desc: 'Seu chefe começou a vender água da privada como água gourmet. Crie um pitch de vendas pra ajudá-lo.' },
-            { title: 'Se Vira!', icon: '🐦', actionName: 'RH DESESPERADO', desc: 'Sua colega de equipe virou uma pomba durante uma reunião. Explique para o RH por que isso não deve ser um problema.' },
+            { title: 'Se Vira!', icon: '🐦', actionName: 'RH DESESPERADO', desc: 'Sua colega de equipe virou uma pomba durante uma reunião. Explique pra o RH por que isso não deve ser um problema.' },
             { title: 'Se Vira!', icon: '🤫', actionName: 'PUBLICIDADE', desc: 'Crie um pitch publicitário pra promover o silêncio.' },
-            { title: 'Se Vira!', icon: '🏃', actionName: 'FUGA TÁTICA', desc: 'Te chamaram pra sair e você não quer ir. Invente a desculpa mais absurda possível.' },
-            { title: 'Se Vira!', icon: '💨', actionName: 'QUEBRANDO TABUS', desc: 'Seu chefe pediu para você criar uma campanha para naturalizar pum em público.' },
-            { title: 'Se Vira!', icon: '😴', actionName: 'HACKING DO SONO', desc: 'Você foi pega dormindo no trabalho. Convença a empresa de que estava testando um novo método de produtividade.' },
-            { title: 'Se Vira!', icon: '🍱', actionName: 'A VINGANÇA', desc: 'Uma pessoa do seu trabalho comeu sua marmita. Para se vingar, invente uma fofoca sobre ela para espalhar na empresa.' },
-            { title: 'Se Vira!', icon: '💎', actionName: 'RÁDIO PIÃO', desc: 'Você foi no banheiro e flagrou sua chefe fazendo algo que não deveria com um rato na bolsa. Conte aos jogadores o que era.' },
-            { title: 'Se Vira!', icon: '💩', actionName: 'SITUAÇÃO DE MERDA', desc: 'Você entrou na sala do seu chefe para pedir umas assinaturas e ele acabou de cagar na calça. O que você diz para ele?' },
-            { title: 'Se Vira!', icon: '💩', actionName: 'ENZO', desc: 'Você trabalha numa escola e a mãe do Enzo trouxe uma reclamação sobre tatu. Conte a fofoca aos outros professores.' },
+            { title: 'Se Vira!', icon: '🏃', actionName: 'FUGA TÁTICA', desc: 'Te chamaram pra sair e vc não quer ir. Invente a desculpa mais absurda possível.' },
+            { title: 'Se Vira!', icon: '💨', actionName: 'QUEBRANDO TABUS', desc: 'Seu chefe pediu pra vc criar uma campanha pra naturalizar pum em público. Faça um discurso pra vender a ideia.' },
+            { title: 'Se Vira!', icon: '😴', actionName: 'HACKING DO SONO', desc: 'Vc foi pega dormindo no trabalho. Convença a empresa de que estava testando um novo método de produtividade.' },
+            { title: 'Se Vira!', icon: '🍱', actionName: 'A VINGANÇA', desc: 'Uma pessoa do seu trabalho comeu sua marmita. Pra se vingar, invente uma fofoca sobre ela pra espalhar na empresa.' },
+            { title: 'Se Vira!', icon: '💎', actionName: 'RÁDIO PIÃO', desc: 'Vc foi no banheiro e flagrou sua chefe fazendo algo que não deveria com um rato na bolsa. Conte aos jogadores o que era.' },
+            { title: 'Se Vira!', icon: '💩', actionName: 'SITUAÇÃO DE MERDA', desc: 'Vc entrou na sala do seu chefe pra pedir umas assinaturas e ele acabou de cagar na calça. O que vc diz pra ele?' },
+            { title: 'Se Vira!', icon: '💩', actionName: 'ENZO', desc: 'Vc trabalha numa escola e a mãe do Enzo trouxe uma reclamação sobre tatu. Conte a fofoca aos outros professores.' },
 
             // EM DUPLA
             { title: 'Em Dupla', icon: '🎭', actionName: 'COMÉDIA BÁSICA', desc: 'Escolha uma dupla. Um começa a piada e o outro termina.' },
             { title: 'Em Dupla', icon: '✨', actionName: 'AWMM', desc: 'Faça um elogio sincero pra alguém da roda.' },
-            { title: 'Em Dupla', icon: '🌟', actionName: 'ADMIRAÇÃO', desc: 'Diga uma coisa que admira em alguém da roda.' },
-            { title: 'Em Dupla', icon: '🪞', actionName: 'ESPELHO MEU', desc: 'Escolha uma dupla. Façam uma encenação onde um imita o outro.' },
+            { title: 'Em Dupla', icon: '✨', actionName: 'AWMM', desc: 'Diga uma coisa que admira em alguém da roda.' },
+            { title: 'Em Dupla', icon: '🪞', actionName: 'ESPELHO', desc: 'Escolha uma dupla. Façam uma encenação onde um imita o outro.' },
             { title: 'Em Dupla', icon: '🌹', actionName: 'MARIA DO BAIRRO', desc: 'Faça uma declaração de amor dramática igual novela mexicana pra alguém da roda.' },
             { title: 'Em Dupla', icon: '👁️', actionName: 'CONEXÃO PROFUNDA', desc: 'Escolha uma dupla. Se olhem nos olhos por 1 min. sem falar (TENTE NÃO RIR).', needsTimer: true },
             { title: 'Em Dupla', icon: '👵', actionName: 'SHARK TANK GERIÁTRICO', desc: 'Escolha alguém da roda. Apresente pra sua investidora uma startup inovadora que aluga avós por assinatura.' },
-            { title: 'Em Dupla', icon: '📉', actionName: 'ROI NEGATIVO', desc: 'Escolha alguém da roda. Você gastou R$50 mil em anúncios e vendeu apenas 1 chaveiro. Apresente os resultados da campanha para sua chefe.' },
+            { title: 'Em Dupla', icon: '📉', actionName: 'ROI NEGATIVO', desc: 'Escolha alguém da roda. Vc gastou R$50 mil em anúncios e vendeu apenas 1 chaveiro. Apresente os resultados da campanha pra sua chefe.' },
             { title: 'Em Dupla', icon: '🕊️', actionName: 'SHARK TANK AVIÁRIO', desc: 'Escolha alguém da roda. Apresente pra sua investidora uma startup de entregas por aplicativo usando pombos.' },
             { title: 'Em Dupla', icon: '🤔', actionName: 'SINCERIDADE', desc: 'Escolha alguém pra perguntar: Qual foi sua primeira impressão sobre mim? (os dois respondem)' },
-            { title: 'Em Dupla', icon: '🗓️', actionName: 'PLANOS', desc: 'Escolha alguém pra perguntar: O que você gostaria de fazer comigo esse ano? (os dois respondem)' },
-            { title: 'Em Dupla', icon: '🎸', actionName: 'CURIOSIDADE', desc: 'Escolha alguém pra perguntar: Qual hobby você gostaria de aprender? (os dois respondem)' },
-            { title: 'Em Dupla', icon: '❤️', actionName: 'LINGUAGEM DO AMOR', desc: 'Escolha alguém pra perguntar: O que faz você se sentir uma pessoa amada? (os dois respondem)' },
-            { title: 'Em Dupla', icon: '🧩', actionName: 'COMPREENSÃO', desc: 'Escolha alguém pra perguntar: O que você gostaria que as pessoas entendessem sobre você? (os dois respondem)' },
-            { title: 'Em Dupla', icon: '🌅', actionName: 'IMAGINAÇÃO', desc: 'Escolha alguém pra perguntar: Como seria seu dia perfeito? (os dois respondem)' },
-            { title: 'Em Dupla', icon: '😊', actionName: 'ALEGRIA', desc: 'Escolha alguém pra perguntar: O que te deixa feliz instantaneamente? (os dois respondem)' },
-            { title: 'Em Dupla', icon: '🫣', actionName: 'EXPOSED', desc: 'Escolha alguém pra perguntar: Qual foi a coisa mais vergonhosa que já aconteceu com você? (os dois respondem)' },
+            { title: 'Em Dupla', icon: '✨', actionName: 'AWMM', desc: 'Escolha alguém pra perguntar: O que vc gostaria de fazer comigo esse ano? (os dois respondem)' },
+            { title: 'Em Dupla', icon: '✨', actionName: 'AWMM', desc: 'Escolha alguém pra perguntar: Qual hobby vc gostaria de aprender? (os dois respondem)' },
+            { title: 'Em Dupla', icon: '❤️', actionName: 'AWMM', desc: 'Escolha alguém pra perguntar: O que faz vc se sentir uma pessoa amada? (os dois respondem)' },
+            { title: 'Em Dupla', icon: '✨', actionName: 'AWMM', desc: 'Escolha alguém pra perguntar: O que vc gostaria que as pessoas entendessem sobre vc? (os dois respondem)' },
+            { title: 'Em Dupla', icon: '✨', actionName: 'AWMM', desc: 'Escolha alguém pra perguntar: Como seria seu dia perfeito? (os dois respondem)' },
+            { title: 'Em Dupla', icon: '✨', actionName: 'AWMM', desc: 'Escolha alguém pra perguntar: O que te deixa feliz instantaneamente? (os dois respondem)' },
+            { title: 'Em Dupla', icon: '🫣', actionName: 'EXPOSED', desc: 'Escolha alguém pra perguntar: Qual foi a coisa mais vergonhosa que já aconteceu com vc? (os dois respondem)' },
             { title: 'Em Dupla', icon: '🛸', actionName: 'CONSPIRACIONISMO', desc: 'Escolha alguém pra perguntar: Qual sua teoria da conspiração favorita? (os dois respondem)' },
-            { title: 'Em Dupla', icon: '🤝', actionName: 'VALORES', desc: 'Escolha alguém pra perguntar: O que você mais valoriza numa relação? (os dois respondem)' },
+            { title: 'Em Dupla', icon: '🤝', actionName: 'AWMM', desc: 'Escolha alguém pra perguntar: O que vc mais valoriza numa relação? (os dois respondem)' },
 
             // CAVEIRINHA
             { title: 'Caveirinha', icon: '💀', actionName: 'IIHHH', desc: 'Defenda o dia do homem.' },
