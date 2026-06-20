@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Se vira!</title>
+    <meta name="description" content="Se vira! — Um jogo de situações hipotéticas (ou não). Divirta-se com amigos!">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Space+Grotesk:wght@600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        :root {
+            --bg: #E8E4E0;
+            --surface: #FFFFFF;
+            --ink: #2D2D2D;
+            --ink-soft: #555;
+            --pink: #E84B8A;
+            --teal: #2AB5A0;
+            --purple: #7B6AE0;
+            --yellow: #F2C94C;
+            --blue: #4A90D9;
+            --orange: #F2994A;
+            --radius: 20px;
+            --radius-sm: 14px;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg);
+            color: var(--ink);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3, .font-retro {
+            font-family: 'Space Grotesk', sans-serif;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-6px); }
+        }
+        @keyframes pop-in {
+            0% { transform: scale(0.92); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        @keyframes spin-slow {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .animate-float { animation: float 3s ease-in-out infinite; }
+        .animate-pop { animation: pop-in 0.3s ease-out; }
+        .animate-spin-slow { animation: spin-slow 12s linear infinite; }
+
+        /* ─── Panels ─── */
+        .panel {
+            width: 100%;
+            max-width: 420px;
+            margin: 0 auto;
+            background: var(--surface);
+            border-radius: var(--radius);
+            box-shadow: 0 4px 24px rgba(0,0,0,0.1);
+            overflow: hidden;
+            animation: pop-in 0.3s ease-out;
+        }
+        .panel-body {
+            padding: 32px 24px;
+        }
+
+        /* ─── Buttons ─── */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: -0.01em;
+            padding: 16px 24px;
+            border-radius: var(--radius-sm);
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+            color: #fff;
+            transition: transform 0.15s, box-shadow 0.15s;
+            box-shadow: 0 3px 12px rgba(0,0,0,0.12);
+        }
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.18);
+        }
+        .btn:active {
+            transform: translateY(1px);
+            box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+        }
+        .btn-pink { background: var(--pink); }
+        .btn-teal { background: var(--teal); }
+        .btn-purple { background: var(--purple); }
+        .btn-yellow { background: var(--yellow); color: var(--ink); }
+
+        .btn-small {
+            padding: 10px 14px;
+            font-size: 0.75rem;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        /* ─── Inputs ─── */
+        .input-field {
+            width: 100%;
+            background: #F5F3F1;
+            border: 2px solid #E0DCDA;
+            border-radius: 12px;
+            padding: 14px 44px 14px 16px;
+            font-family: 'Inter', sans-serif;
+            font-weight: 600;
+            font-size: 0.95rem;
+            color: var(--ink);
+            outline: none;
+            transition: border-color 0.2s;
+        }
+        .input-field::placeholder { color: #B0ACAA; font-weight: 500; }
+        .input-field:focus { border-color: var(--purple); }
+
+        /* ─── Game Card (flashcard style) ─── */
+        .game-card {
+            width: 100%;
+            max-width: 320px;
+            min-height: 440px;
+            margin: 0 auto;
+            border-radius: var(--radius);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 6px 28px rgba(0,0,0,0.14);
+            animation: pop-in 0.3s ease-out;
+            color: var(--ink);
+        }
+
+        .game-card-top {
+            flex-shrink: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 28px 20px 20px;
+            gap: 6px;
+        }
+        .game-card-top .icon-box {
+            width: 100px;
+            height: 100px;
+            background: rgba(255,255,255,0.45);
+            border-radius: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .game-card-top .emoji {
+            font-size: 3.2rem;
+            line-height: 1;
+        }
+        .game-card-top .card-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 800;
+            font-size: 1.2rem;
+            text-transform: uppercase;
+            letter-spacing: -0.02em;
+            margin-top: 4px;
+        }
+
+        .game-card-bottom {
+            flex-grow: 1;
+            background: var(--surface);
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+        }
+        .game-card-bottom .action-name {
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 800;
+            font-size: 1.05rem;
+            text-transform: uppercase;
+            letter-spacing: -0.02em;
+            margin-bottom: 8px;
+            color: var(--ink);
+        }
+        .game-card-bottom .action-desc {
+            font-weight: 600;
+            font-size: 0.88rem;
+            line-height: 1.5;
+            color: var(--ink-soft);
+            flex-grow: 1;
+        }
+
+        .card-timer {
+            border-top: 2px solid #EEE;
+            padding-top: 12px;
+            margin-top: 14px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+        }
+        .card-timer .timer-value {
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 800;
+            font-size: 1.6rem;
+        }
+        .card-timer button {
+            background: var(--ink);
+            color: #fff;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 10px;
+            font-weight: 700;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .card-timer button:hover { background: var(--purple); }
+        .card-timer button:disabled { opacity: 0.35; cursor: not-allowed; }
+
+        /* ─── HUD ─── */
+        .hud {
+            width: 100%;
+            max-width: 320px;
+            margin: 0 auto 16px;
+            background: var(--surface);
+            border-radius: var(--radius-sm);
+            padding: 14px 18px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+        }
+        .hud .label {
+            font-size: 0.65rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: #AAA;
+        }
+        .hud .name {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.3rem;
+            font-weight: 800;
+        }
+
+        .icon-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            transition: transform 0.12s, box-shadow 0.12s;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        .icon-btn:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
+        .icon-btn:active { transform: translateY(1px); box-shadow: none; }
+
+        /* ─── Rules ─── */
+        .rule-row {
+            display: flex;
+            gap: 12px;
+            align-items: flex-start;
+        }
+        .rule-num {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 0.8rem;
+            flex-shrink: 0;
+            color: #fff;
+        }
+        .rule-text {
+            font-weight: 600;
+            font-size: 0.88rem;
+            color: var(--ink-soft);
+            line-height: 1.45;
+        }
+
+        /* ─── Misc ─── */
+        .hidden-screen { display: none !important; }
+
+        .add-link {
+            font-weight: 700;
+            font-size: 0.85rem;
+            color: var(--purple);
+            background: none;
+            border: none;
+            cursor: pointer;
+            text-decoration: underline;
+            font-family: 'Inter', sans-serif;
+        }
+        .add-link:hover { color: var(--pink); }
+
+        .error-msg {
+            color: var(--pink);
+            font-size: 0.75rem;
+            font-weight: 700;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        @media (max-width: 380px) {
+            .panel-body { padding: 24px 18px; }
+            .game-card-top .icon-box { width: 80px; height: 80px; }
+            .game-card-top .emoji { font-size: 2.6rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <audio id="bgMusic" loop preload="none">
+        <source src="https://stream.zeno.fm/f3wvbbqmdg8uv" type="audio/mpeg">
+        Seu navegador não suporta áudio.
+    </audio>
+
+    <div id="app" style="width:100%; max-width:480px; margin:0 auto; display:flex; flex-direction:column; align-items:center; justify-content:center;">
+
+        <!-- ═══ TELA INICIAL ═══ -->
+        <div id="screen-start" class="panel">
+            <div class="panel-body" style="text-align:center;">
+
+                <div style="position:relative; width:120px; height:120px; margin:0 auto 28px;">
+                    <div class="animate-spin-slow" style="position:absolute; inset:0; background:var(--yellow); border-radius:50%;"></div>
+                    <div style="position:absolute; inset:10px; background:var(--surface); border-radius:50%; display:flex; align-items:center; justify-content:center;">
+                        <span class="font-retro" style="font-size:3.4rem; font-weight:800;">!</span>
+                    </div>
+                </div>
+
+                <h1 class="font-retro" style="font-size:2.8rem; font-weight:800; line-height:0.95; text-transform:uppercase; letter-spacing:-0.04em; margin-bottom:14px;">
+                    SE<br>
+                    <span style="display:inline-block; background:var(--ink); color:var(--yellow); padding:4px 14px; border-radius:8px; transform:rotate(-2deg); margin-top:6px;">VIRA!</span>
+                </h1>
+
+                <p style="font-weight:600; color:var(--ink-soft); margin-bottom:32px; font-size:0.95rem;">
+                    Um jogo de situações hipotéticas (ou não).
+                </p>
+
+                <button onclick="startGameSequence()" class="btn btn-pink" style="width:100%; font-size:1.1rem;">
+                    INICIAR JOGO ⚡
+                </button>
+            </div>
+        </div>
+
+        <!-- ═══ TELA LOBBY ═══ -->
+        <div id="screen-lobby" class="panel hidden-screen">
+            <div style="height:8px; background:var(--teal);"></div>
+            <div class="panel-body">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:24px;">
+                    <h2 class="font-retro" style="font-size:1.6rem; font-weight:800; text-transform:uppercase;">Início</h2>
+                    <button onclick="toggleMusic()" class="icon-btn" style="background:var(--purple); color:#fff;" title="Tocar / Pausar Rádio">
+                        <span class="icon-playing">📻</span>
+                        <span class="icon-paused" style="display:none;">▶️</span>
+                    </button>
+                </div>
+
+                <p style="font-size:0.85rem; font-weight:600; text-align:center; margin-bottom:16px; color:var(--ink-soft);">
+                    Insira o nome dos jogadores abaixo para começar (Mínimo 2):
+                </p>
+
+                <div id="players-list" style="display:flex; flex-direction:column; gap:10px;"></div>
+
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-top:14px;">
+                    <button onclick="addPlayerInput()" class="add-link">+ ADICIONAR JOGADOR</button>
+                    <span id="player-error" class="error-msg">Preencha ao menos 2 nomes!</span>
+                </div>
+
+                <button onclick="goToRules()" class="btn btn-teal" style="width:100%; margin-top:24px; font-size:1rem;">
+                    COMEÇAR ➔
+                </button>
+            </div>
+        </div>
+
+        <!-- ═══ TELA REGRAS ═══ -->
+        <div id="screen-rules" class="panel hidden-screen">
+            <div style="height:8px; background:var(--pink);"></div>
+            <div class="panel-body">
+                <h2 class="font-retro" style="font-size:1.6rem; font-weight:800; text-align:center; text-transform:uppercase; margin-bottom:24px;">REGRAS</h2>
+
+                <div style="display:flex; flex-direction:column; gap:16px; margin-bottom:28px;">
+                    <div class="rule-row">
+                        <div class="rule-num" style="background:var(--yellow); color:var(--ink);">1</div>
+                        <p class="rule-text">O jogo rotaciona os turnos automaticamente pela ordem dos jogadores.</p>
+                    </div>
+                    <div class="rule-row">
+                        <div class="rule-num" style="background:var(--pink);">2</div>
+                        <p class="rule-text">Leia o título e o desafio em voz alta. Cumpra a ação e passe para o próximo jogador.</p>
+                    </div>
+                    <div class="rule-row">
+                        <div class="rule-num" style="background:var(--purple); color:#fff;">3</div>
+                        <p class="rule-text">Sem placar, sem pontos e sem objetivo (mas se quiser inventar, pode).</p>
+                    </div>
+                    <div class="rule-row">
+                        <div class="rule-num" style="background:var(--teal); color:#fff;">4</div>
+                        <p class="rule-text">Tem uma música de fundo, use o botão play/pause para ligar ou desativar.</p>
+                    </div>
+                </div>
+
+                <button onclick="startPlaying()" class="btn btn-yellow" style="width:100%; font-size:1rem;">
+                    BORA JOGAR!
+                </button>
+            </div>
+        </div>
+
+        <!-- ═══ TELA DO JOGO ═══ -->
+        <div id="screen-game" class="hidden-screen" style="width:100%; display:flex; flex-direction:column; align-items:center;">
+
+            <div class="hud">
+                <div>
+                    <div class="label">VEZ DE:</div>
+                    <div id="current-player-name" class="name">---</div>
+                </div>
+                <div style="display:flex; gap:8px;">
+                    <button onclick="toggleMusic()" class="icon-btn" style="background:var(--purple); color:#fff;" title="Música">
+                        <span class="icon-playing">⏸️</span>
+                        <span class="icon-paused" style="display:none;">▶️</span>
+                    </button>
+                    <button onclick="confirmReset()" class="icon-btn" style="background:#E8E4E0; color:var(--ink);" title="Voltar ao Início">
+                        ↺
+                    </button>
+                </div>
+            </div>
+
+            <div id="game-card" class="game-card">
+
+                <div id="card-top" class="game-card-top" style="background:var(--pink);">
+                    <div class="icon-box">
+                        <span id="card-icon" class="emoji">💀</span>
+                    </div>
+                    <span id="card-title" class="card-title">CARTA</span>
+                </div>
+
+                <div class="game-card-bottom">
+                    <div id="card-action-name" class="action-name">AÇÃO REATIVA</div>
+                    <p id="card-desc" class="action-desc">Carregando o próximo desafio...</p>
+
+                    <div id="card-timer-container" class="card-timer" style="display:none;">
+                        <div id="timer-display" class="timer-value">01:00</div>
+                        <button id="btn-start-timer" onclick="startTimer()">Iniciar Cronômetro</button>
+                    </div>
+                </div>
+
+            </div>
+
+            <div style="margin-top:20px; width:100%; max-width:320px;">
+                <button onclick="nextTurn()" class="btn btn-purple" style="width:100%; font-size:0.95rem;">
+                    PRÓXIMO JOGADOR ➔
+                </button>
+            </div>
+        </div>
+
+        <!-- ═══ TELA FINAL ═══ -->
+        <div id="screen-end" class="panel hidden-screen">
+            <div class="panel-body" style="text-align:center;">
+                <span style="font-size:4rem; display:block; margin-bottom:12px;" class="animate-float">🏆</span>
+                <h1 class="font-retro" style="font-size:2rem; font-weight:800; text-transform:uppercase; letter-spacing:-0.03em; margin-bottom:8px;">O BARALHO ACABOU!</h1>
+                <p style="font-weight:600; color:var(--ink-soft); margin-bottom:28px; font-size:0.95rem;">
+                    Fim das cartas. Quer ir de novo?
+                </p>
+                <button onclick="resetGame()" class="btn btn-pink" style="width:100%; font-size:1rem;">
+                    MISTURAR E VOLTAR AO INÍCIO ↺
+                </button>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        let players = [];
+        let currentPlayerIndex = 0;
+        let isMuted = false;
+        let timerInterval;
+
+        const colorMap = {
+            'Se Vira!': '#E84B8A',
+            'Em Dupla': '#2AB5A0',
+            'Caveirinha': '#7B6AE0',
+            'Gatinho Cansado': '#F2C94C',
+        };
+
+        const originalDeck = [
+            // SE VIRA!
+            { title: 'Se Vira!', icon: '📱', actionName: 'ÁUDIO DE ZAP', desc: 'Escolha 3 figurinhas do WhatsApp e imite o som que elas teriam.' },
+            { title: 'Se Vira!', icon: '🤡', actionName: 'STAND UP', desc: 'Conte uma piadoca.' },
+            { title: 'Se Vira!', icon: '🖼️', actionName: 'CRÍTICA DE ARTE', desc: 'Defenda uma arte totalmente em branco.' },
+            { title: 'Se Vira!', icon: '👽', actionName: 'PALESTRINHA', desc: 'Um alienígena escolheu vc como representante da humanidade. Qual seria seu primeiro discurso pra população alien ao chegar no planeta deles?' },
+            { title: 'Se Vira!', icon: '🤣', actionName: 'PRODUTIVIDADE', desc: 'Você precisa justificar 8 horas de trabalho usando apenas memes.' },
+            { title: 'Se Vira!', icon: '🐒', actionName: 'SAFARI OFFICE', desc: 'Seu notebook da empresa foi roubado por macacos. Relate o ocorrido.' },
+            { title: 'Se Vira!', icon: '🌤️', actionName: 'GAROTA DO TEMPO', desc: 'Descreva seu dia de trabalho como se fosse um jornal com a previsão do tempo.' },
+            { title: 'Se Vira!', icon: '🖊️', actionName: 'LOBO DE WALL STREET', desc: 'Você precisa vender uma caneta que não escreve. Qual seria o seu discurso?' },
+            { title: 'Se Vira!', icon: '☁️', actionName: 'MARKETING', desc: 'Seu chefe começou a vender nuvens do céu. Crie um pitch de vendas pra ajudá-lo.' },
+            { title: 'Se Vira!', icon: '🚽', actionName: 'ÁGUA PREMIUM', desc: 'Seu chefe começou a vender água da privada como água gourmet. Crie um pitch de vendas pra ajudá-lo.' },
+            { title: 'Se Vira!', icon: '🐦', actionName: 'RH DESESPERADO', desc: 'Sua colega de equipe virou uma pomba durante uma reunião. Explique para o RH por que isso não deve ser um problema.' },
+            { title: 'Se Vira!', icon: '🤫', actionName: 'PUBLICIDADE', desc: 'Crie um pitch publicitário pra promover o silêncio.' },
+            { title: 'Se Vira!', icon: '🏃', actionName: 'FUGA TÁTICA', desc: 'Te chamaram pra sair e você não quer ir. Invente a desculpa mais absurda possível.' },
+            { title: 'Se Vira!', icon: '💨', actionName: 'QUEBRANDO TABUS', desc: 'Seu chefe pediu para você criar uma campanha para naturalizar pum em público.' },
+            { title: 'Se Vira!', icon: '😴', actionName: 'HACKING DO SONO', desc: 'Você foi pega dormindo no trabalho. Convença a empresa de que estava testando um novo método de produtividade.' },
+            { title: 'Se Vira!', icon: '🍱', actionName: 'A VINGANÇA', desc: 'Uma pessoa do seu trabalho comeu sua marmita. Para se vingar, invente uma fofoca sobre ela para espalhar na empresa.' },
+            { title: 'Se Vira!', icon: '💎', actionName: 'RÁDIO PIÃO', desc: 'Você foi no banheiro e flagrou sua chefe fazendo algo que não deveria com um rato na bolsa. Conte aos jogadores o que era.' },
+            { title: 'Se Vira!', icon: '💩', actionName: 'SITUAÇÃO DE MERDA', desc: 'Você entrou na sala do seu chefe para pedir umas assinaturas e ele acabou de cagar na calça. O que você diz para ele?' },
+            { title: 'Se Vira!', icon: '💩', actionName: 'ENZO', desc: 'Você trabalha numa escola e a mãe do Enzo trouxe uma reclamação sobre tatu. Conte a fofoca aos outros professores.' },
+
+            // EM DUPLA
+            { title: 'Em Dupla', icon: '🎭', actionName: 'COMÉDIA BÁSICA', desc: 'Escolha uma dupla. Um começa a piada e o outro termina.' },
+            { title: 'Em Dupla', icon: '✨', actionName: 'AWMM', desc: 'Faça um elogio sincero pra alguém da roda.' },
+            { title: 'Em Dupla', icon: '🌟', actionName: 'ADMIRAÇÃO', desc: 'Diga uma coisa que admira em alguém da roda.' },
+            { title: 'Em Dupla', icon: '🪞', actionName: 'ESPELHO MEU', desc: 'Escolha uma dupla. Façam uma encenação onde um imita o outro.' },
+            { title: 'Em Dupla', icon: '🌹', actionName: 'MARIA DO BAIRRO', desc: 'Faça uma declaração de amor dramática igual novela mexicana pra alguém da roda.' },
+            { title: 'Em Dupla', icon: '👁️', actionName: 'CONEXÃO PROFUNDA', desc: 'Se olhem nos olhos por 1 min. sem falar (TENTE NÃO RIR).', needsTimer: true },
+            { title: 'Em Dupla', icon: '👵', actionName: 'SHARK TANK GERIÁTRICO', desc: 'Escolha alguém da roda. Apresente pra sua investidora uma startup inovadora que aluga avós por assinatura.' },
+            { title: 'Em Dupla', icon: '📉', actionName: 'ROI NEGATIVO', desc: 'Escolha alguém da roda. Você gastou R$50 mil em anúncios e vendeu apenas 1 chaveiro. Apresente os resultados da campanha para sua chefe.' },
+            { title: 'Em Dupla', icon: '🕊️', actionName: 'SHARK TANK AVIÁRIO', desc: 'Escolha alguém da roda. Apresente pra sua investidora uma startup de entregas por aplicativo usando pombos.' },
+            { title: 'Em Dupla', icon: '🤔', actionName: 'SINCERIDADE', desc: 'Escolha alguém pra perguntar: Qual foi sua primeira impressão sobre mim? (os dois respondem)' },
+            { title: 'Em Dupla', icon: '🗓️', actionName: 'PLANOS', desc: 'Escolha alguém pra perguntar: O que você gostaria de fazer comigo esse ano? (os dois respondem)' },
+            { title: 'Em Dupla', icon: '🎸', actionName: 'CURIOSIDADE', desc: 'Escolha alguém pra perguntar: Qual hobby você gostaria de aprender? (os dois respondem)' },
+            { title: 'Em Dupla', icon: '❤️', actionName: 'LINGUAGEM DO AMOR', desc: 'Escolha alguém pra perguntar: O que faz você se sentir uma pessoa amada? (os dois respondem)' },
+            { title: 'Em Dupla', icon: '🧩', actionName: 'COMPREENSÃO', desc: 'Escolha alguém pra perguntar: O que você gostaria que as pessoas entendessem sobre você? (os dois respondem)' },
+            { title: 'Em Dupla', icon: '🌅', actionName: 'IMAGINAÇÃO', desc: 'Escolha alguém pra perguntar: Como seria seu dia perfeito? (os dois respondem)' },
+            { title: 'Em Dupla', icon: '😊', actionName: 'ALEGRIA', desc: 'Escolha alguém pra perguntar: O que te deixa feliz instantaneamente? (os dois respondem)' },
+            { title: 'Em Dupla', icon: '🫣', actionName: 'EXPOSED', desc: 'Escolha alguém pra perguntar: Qual foi a coisa mais vergonhosa que já aconteceu com você? (os dois respondem)' },
+            { title: 'Em Dupla', icon: '🛸', actionName: 'CONSPIRACIONISMO', desc: 'Escolha alguém pra perguntar: Qual sua teoria da conspiração favorita? (os dois respondem)' },
+            { title: 'Em Dupla', icon: '🤝', actionName: 'VALORES', desc: 'Escolha alguém pra perguntar: O que você mais valoriza numa relação? (os dois respondem)' },
+
+            // CAVEIRINHA
+            { title: 'Caveirinha', icon: '💀', actionName: 'IIHHH', desc: 'Defenda o dia do homem.' },
+            { title: 'Caveirinha', icon: '💀', actionName: 'IIHHH', desc: 'Defenda o mês do orgulho hetero.' },
+            { title: 'Caveirinha', icon: '💀', actionName: 'IIHHH', desc: 'Defenda a escala 7x0.' },
+            { title: 'Caveirinha', icon: '💀', actionName: 'IIHHH', desc: 'Defenda o fim do café grátis na empresa.' },
+            { title: 'Caveirinha', icon: '💀', actionName: 'IIHHH', desc: 'Defenda artes geradas por IA.' },
+            { title: 'Caveirinha', icon: '💀', actionName: 'IIHHH', desc: 'Defenda o hyperpop como música de qualidade.' },
+            { title: 'Caveirinha', icon: '💀', actionName: 'IIHHH', desc: 'Defenda o uso de comic sans em documentos oficiais.' },
+            { title: 'Caveirinha', icon: '💀', actionName: 'IIHHH', desc: 'Defenda a Virginia como uma grande empreendedora na perfumaria.' },
+            { title: 'Caveirinha', icon: '💀', actionName: 'IIHHH', desc: 'Defenda sair da padaria com o pão na mão pra economizar sacolas.' },
+            { title: 'Caveirinha', icon: '💀', actionName: 'IIHHH', desc: 'Defenda a teoria da terra plana.' },
+            { title: 'Caveirinha', icon: '💀', actionName: 'IIHHH', desc: 'Defenda mulheres trabalhando no dia da mulher.' },
+            { title: 'Caveirinha', icon: '💀', actionName: 'IIHHH', desc: 'Defenda o uso de sapatênis em eventos chic.' },
+
+            // GATINHO CANSADO
+            { title: 'Gatinho Cansado', icon: '😿', actionName: 'RECLAMAÇÃO', desc: 'Faça uma reclamação formal do porque sua ração não veio gourmet.' },
+            { title: 'Gatinho Cansado', icon: '😿', actionName: 'MIAU', desc: 'Faça um miado dramático.' },
+            { title: 'Gatinho Cansado', icon: '😿', actionName: 'CORRETOR FELINO', desc: 'Argumente por que caixas de papelão são imóveis de luxo.' },
+            { title: 'Gatinho Cansado', icon: '😿', actionName: 'MODO PREGUIÇA', desc: 'Jogue a próxima rodada deitada(o) igual gato.' }
+        ];
+
+        let currentDeck = [];
+
+        function playBackgroundMusic() {
+            const audio = document.getElementById('bgMusic');
+            audio.volume = 0.35;
+            let playPromise = audio.play();
+            if (playPromise !== undefined) {
+                playPromise.catch(() => {
+                    isMuted = true;
+                    updateAudioIcons();
+                });
+            } else {
+                isMuted = false;
+                updateAudioIcons();
+            }
+        }
+
+        function toggleMusic() {
+            const audio = document.getElementById('bgMusic');
+            if (audio.paused) {
+                audio.play();
+                isMuted = false;
+            } else {
+                audio.pause();
+                isMuted = true;
+            }
+            updateAudioIcons();
+        }
+
+        function updateAudioIcons() {
+            document.querySelectorAll('.icon-playing').forEach(el => el.style.display = isMuted ? 'none' : 'inline');
+            document.querySelectorAll('.icon-paused').forEach(el => el.style.display = isMuted ? 'inline' : 'none');
+        }
+
+        function showScreen(screenId) {
+            ['screen-start', 'screen-lobby', 'screen-rules', 'screen-game', 'screen-end'].forEach(id => {
+                document.getElementById(id).classList.add('hidden-screen');
+            });
+            document.getElementById(screenId).classList.remove('hidden-screen');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function startGameSequence() {
+            playBackgroundMusic();
+            const list = document.getElementById('players-list');
+            if (list.children.length === 0) {
+                for (let i = 1; i <= 4; i++) addPlayerInput(i);
+            }
+            showScreen('screen-lobby');
+        }
+
+        function addPlayerInput(num = null) {
+            const list = document.getElementById('players-list');
+            const idx = list.children.length + 1;
+            const ph = num || idx;
+            const wrapper = document.createElement('div');
+            wrapper.style.position = 'relative';
+            wrapper.innerHTML = `
+                <input type="text" placeholder="Nome do Jogador ${ph}" class="input-field player-name-input">
+                <span style="position:absolute; right:14px; top:50%; transform:translateY(-50%); color:#C0BCBA; font-weight:700; font-size:0.75rem;">#${idx}</span>
+            `;
+            list.appendChild(wrapper);
+        }
+
+        function goToRules() {
+            const inputs = document.querySelectorAll('.player-name-input');
+            players = [];
+            inputs.forEach(input => {
+                const name = input.value.trim();
+                if (name) players.push(name);
+            });
+            if (players.length < 2) {
+                const err = document.getElementById('player-error');
+                err.style.opacity = '1';
+                setTimeout(() => err.style.opacity = '0', 3000);
+                return;
+            }
+            showScreen('screen-rules');
+        }
+
+        function shuffle(arr) {
+            let i = arr.length, j;
+            while (i !== 0) {
+                j = Math.floor(Math.random() * i);
+                i--;
+                [arr[i], arr[j]] = [arr[j], arr[i]];
+            }
+            return arr;
+        }
+
+        function startPlaying() {
+            currentDeck = shuffle([...originalDeck]);
+            currentPlayerIndex = 0;
+            prepareTurn();
+            showScreen('screen-game');
+        }
+
+        function prepareTurn() {
+            document.getElementById('current-player-name').textContent = players[currentPlayerIndex];
+
+            if (currentDeck.length > 0) {
+                const card = currentDeck.shift();
+                const bg = colorMap[card.title] || '#E84B8A';
+
+                document.getElementById('card-title').textContent = card.title;
+                document.getElementById('card-icon').textContent = card.icon;
+                document.getElementById('card-action-name').textContent = card.actionName;
+                document.getElementById('card-desc').innerHTML = card.desc;
+                document.getElementById('card-top').style.background = bg;
+
+                // Adjust title color for light backgrounds
+                const titleEl = document.getElementById('card-title');
+                titleEl.style.color = card.title === 'Gatinho Cansado' ? 'var(--ink)' : '#fff';
+
+                clearInterval(timerInterval);
+                const timerContainer = document.getElementById('card-timer-container');
+                const display = document.getElementById('timer-display');
+                const btn = document.getElementById('btn-start-timer');
+
+                if (card.needsTimer) {
+                    timerContainer.style.display = 'flex';
+                    display.textContent = '01:00';
+                    display.style.color = 'var(--ink)';
+                    btn.disabled = false;
+                    btn.textContent = 'INICIAR CRONÔMETRO';
+                } else {
+                    timerContainer.style.display = 'none';
+                }
+
+                // Re-trigger animation
+                const el = document.getElementById('game-card');
+                el.style.animation = 'none';
+                el.offsetHeight;
+                el.style.animation = '';
+            }
+        }
+
+        function startTimer() {
+            const display = document.getElementById('timer-display');
+            const btn = document.getElementById('btn-start-timer');
+            btn.disabled = true;
+            let timeLeft = 60;
+            display.textContent = '01:00';
+            clearInterval(timerInterval);
+            timerInterval = setInterval(() => {
+                timeLeft--;
+                const m = Math.floor(timeLeft / 60).toString().padStart(2, '0');
+                const s = (timeLeft % 60).toString().padStart(2, '0');
+                display.textContent = `${m}:${s}`;
+                if (timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    display.textContent = '00:00';
+                    display.style.color = 'var(--pink)';
+                    btn.textContent = 'TEMPO ESGOTADO!';
+                }
+            }, 1000);
+        }
+
+        function nextTurn() {
+            if (currentDeck.length === 0) {
+                showScreen('screen-end');
+                return;
+            }
+            currentPlayerIndex = (currentPlayerIndex + 1) % players.length;
+            prepareTurn();
+        }
+
+        function confirmReset() {
+            if (confirm('Tem certeza que quer voltar ao início?')) {
+                resetGame();
+            }
+        }
+
+        function resetGame() {
+            clearInterval(timerInterval);
+            showScreen('screen-lobby');
+        }
+    </script>
+</body>
+</html>
